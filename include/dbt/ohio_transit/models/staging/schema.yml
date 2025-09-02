@@ -1,0 +1,371 @@
+# version: 2
+
+# models:
+#   # ---------------------------
+#   # GTFS stops (staging layer)
+#   # ---------------------------
+#   - name: stg_stops
+#     description: "Clean, typed staging view for GTFS stops."
+#     columns:
+#       - name: stop_id
+#         description: "Primary key for a stop."
+#         tests: [not_null, unique]
+
+#       - name: stop_name
+#         description: "Human-readable stop name."
+#         tests: [not_null]
+
+#       - name: stop_lat
+#         description: "Latitude (WGS84)."
+#         tests: [not_null]
+
+#       - name: stop_lon
+#         description: "Longitude (WGS84)."
+#         tests: [not_null]
+
+#       # parent_station should reference an existing stop_id when present
+#       - name: parent_station
+#         description: "If present, the stop_id of the parent station."
+#         tests:
+#           - relationships:
+#               to: ref('stg_stops')
+#               field: stop_id
+#               where: "parent_station is not null"
+
+#   # ------------------------------
+#   # GTFS calendar (staging layer)
+#   # ------------------------------
+#   - name: stg_calendar
+#     description: "Clean, typed staging view for GTFS calendar service days."
+#     columns:
+#       - name: service_id
+#         description: "Service identifier for a schedule/date set."
+#         tests: [not_null, unique]
+
+#       - name: monday
+#         description: "1 if service runs on Monday, else 0."
+#         tests:
+#           - accepted_values: {values: [0, 1], quote: false}
+#       - name: tuesday
+#         tests:
+#           - accepted_values: {values: [0, 1], quote: false}
+#       - name: wednesday
+#         tests:
+#           - accepted_values: {values: [0, 1], quote: false}
+#       - name: thursday
+#         tests:
+#           - accepted_values: {values: [0, 1], quote: false}
+#       - name: friday
+#         tests:
+#           - accepted_values: {values: [0, 1], quote: false}
+#       - name: saturday
+#         tests:
+#           - accepted_values: {values: [0, 1], quote: false}
+#       - name: sunday
+#         tests:
+#           - accepted_values: {values: [0, 1], quote: false}
+
+#       - name: start_date
+#         description: "Start of service period (DATE)."
+#         tests: [not_null]
+
+#       - name: end_date
+#         description: "End of service period (DATE)."
+#         tests: [not_null]
+#         # If you add dbt-utils, you can enforce end_date >= start_date:
+#         # tests:
+#         #   - dbt_utils.expression_is_true:
+#         #       expression: "end_date >= start_date"
+
+
+
+
+# 2nd Try
+# version: 2
+
+# models:
+#   - name: stg_calendar_dates
+#     description: "Service exceptions to the GTFS calendar (added or removed service dates)."
+#     columns:
+#       - name: service_id
+#         description: "Unique identifier for a set of service dates."
+#         tests: [not_null]
+#       - name: date
+#         description: "Date the service exception applies to."
+#         tests: [not_null]
+#       - name: exception_type
+#         description: "1 = Service added, 2 = Service removed."
+#         tests:
+#           - accepted_values:
+#               values: [1, 2]
+
+#   - name: stg_calendar
+#     description: "Service schedule from GTFS, including active weekdays and start/end dates."
+#     columns:
+#       - name: service_id
+#         tests: [not_null, unique]
+#       - name: monday
+#         tests: [accepted_values: {values: [0, 1]}]
+#       - name: tuesday
+#         tests: [accepted_values: {values: [0, 1]}]
+#       - name: wednesday
+#         tests: [accepted_values: {values: [0, 1]}]
+#       - name: thursday
+#         tests: [accepted_values: {values: [0, 1]}]
+#       - name: friday
+#         tests: [accepted_values: {values: [0, 1]}]
+#       - name: saturday
+#         tests: [accepted_values: {values: [0, 1]}]
+#       - name: sunday
+#         tests: [accepted_values: {values: [0, 1]}]
+#       - name: start_date
+#         tests: [not_null]
+#       - name: end_date
+#         tests: [not_null]
+
+#   - name: stg_routes
+#     description: "Transit routes with IDs, names, and route metadata."
+#     columns:
+#       - name: route_id
+#         tests: [not_null, unique]
+#       - name: agency_id
+#       - name: route_short_name
+#       - name: route_long_name
+#       - name: route_desc
+#       - name: route_type
+#         tests: [accepted_values: {values: [0, 1, 2, 3, 4, 5, 6, 7]}]
+#       - name: route_url
+#       - name: route_color
+#       - name: route_text_color
+
+#   - name: stg_shapes
+#     description: "Geospatial shapes representing the path of a trip."
+#     columns:
+#       - name: shape_id
+#         tests: [not_null]
+#       - name: shape_pt_lat
+#         tests: [not_null]
+#       - name: shape_pt_lon
+#         tests: [not_null]
+#       - name: shape_pt_sequence
+#         tests: [not_null]
+#       - name: shape_dist_traveled
+
+#   - name: stg_stop_times
+#     description: "Stop times for trips, including arrival and departure times."
+#     columns:
+#       - name: trip_id
+#         tests: [not_null]
+#       - name: arrival_time
+#       - name: departure_time
+#       - name: stop_id
+#         tests: [not_null]
+#       - name: stop_sequence
+#         tests: [not_null]
+#       - name: stop_headsign
+#       - name: pickup_type
+#       - name: drop_off_type
+#       - name: shape_dist_traveled
+#       - name: timepoint
+
+#   - name: stg_stops
+#     description: "Physical stops where passengers board or alight."
+#     columns:
+#       - name: stop_id
+#         tests: [not_null, unique]
+#       - name: stop_code
+#       - name: stop_name
+#       - name: stop_desc
+#       - name: stop_lat
+#         tests: [not_null]
+#       - name: stop_lon
+#         tests: [not_null]
+#       - name: zone_id
+#       - name: stop_url
+#       - name: location_type
+#       - name: parent_station
+#       - name: stop_timezone
+#       - name: wheelchair_boarding
+
+#   - name: stg_trips
+#     description: "Individual scheduled trips along a route."
+#     columns:
+#       - name: route_id
+#         tests: [not_null]
+#       - name: service_id
+#         tests: [not_null]
+#       - name: trip_id
+#         tests: [not_null, unique]
+#       - name: trip_headsign
+#       - name: trip_short_name
+#       - name: direction_id
+#       - name: block_id
+#       - name: shape_id
+#       - name: wheelchair_accessible
+#       - name: bikes_allowed
+
+
+# 3rd Try
+version: 2
+
+models:
+  # ---------------------------
+  # GTFS calendar_dates
+  # ---------------------------
+  - name: stg_calendar_dates
+    description: "Service exceptions to the GTFS calendar (added or removed service dates)."
+    columns:
+      - name: service_id
+        description: "Identifier for a set of service dates."
+        tests: [not_null]
+      - name: date
+        description: "Date the service exception applies to (DATE)."
+        tests: [not_null]
+      - name: exception_type
+        description: "1 = added service, 2 = removed service."
+        tests:
+          - accepted_values:
+              values: [1, 2]
+              quote: false
+
+  # ---------------------------
+  # GTFS calendar
+  # ---------------------------
+  - name: stg_calendar
+    description: "Base service schedule and active weekdays for each service_id."
+    columns:
+      - name: service_id
+        tests: [not_null, unique]
+      - name: monday
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+      - name: tuesday
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+      - name: wednesday
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+      - name: thursday
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+      - name: friday
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+      - name: saturday
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+      - name: sunday
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+      - name: start_date
+        tests: [not_null]
+      - name: end_date
+        tests: [not_null]
+
+  # ---------------------------
+  # GTFS routes
+  # ---------------------------
+  - name: stg_routes
+    description: "Transit routes with names, types, and display attributes."
+    columns:
+      - name: route_id
+        tests: [not_null, unique]
+      - name: route_type
+        description: "GTFS mode code (0=Tram,1=Subway,2=Rail,3=Bus,4=Ferry,5=Cable tram,6=Aerial lift,7=Funicular,11=Trolleybus,12=Monorail)."
+        tests:
+          - accepted_values:
+              values: [0, 1, 2, 3, 4, 5, 6, 7, 11, 12]
+              quote: false
+
+  # ---------------------------
+  # GTFS shapes
+  # ---------------------------
+  # - name: stg_shapes
+  #   description: "Ordered shape points (lat/lon) composing each shape_id polyline."
+  #   columns:
+  #     - name: shape_id
+  #       tests: [not_null]
+  #     - name: shape_pt_lat
+  #       tests: [not_null]
+  #     - name: shape_pt_lon
+  #       tests: [not_null]
+  #     - name: shape_pt_sequence
+  #       tests: [not_null]
+
+  # ---------------------------
+  # GTFS stop_times
+  # ---------------------------
+  - name: stg_stop_times
+    description: "Stop-by-stop timings for each trip."
+    columns:
+      - name: trip_id
+        tests: [not_null]
+      - name: stop_id
+        tests: [not_null]
+      - name: stop_sequence
+        tests: [not_null]
+
+  # ---------------------------
+  # GTFS stops
+  # ---------------------------
+  - name: stg_stops
+    description: "Physical stops; includes location and accessibility flags."
+    columns:
+      - name: stop_id
+        tests: [not_null, unique]
+      - name: stop_lat
+        tests: [not_null]
+      - name: stop_lon
+        tests: [not_null]
+      - name: parent_station
+        description: "If present, references another stop_id that is the parent station."
+        tests:
+          - relationships:
+              to: ref('stg_stops')
+              field: stop_id
+              where: "parent_station is not null"
+
+  # ---------------------------
+  # GTFS trips
+  # ---------------------------
+  - name: stg_trips
+    description: "Scheduled trips tied to a route and service calendar."
+    columns:
+      - name: trip_id
+        tests: [not_null, unique]
+      - name: route_id
+        tests: [not_null]
+      - name: service_id
+        tests: [not_null]
+      - name: direction_id
+        description: "0/1 direction flag, if provided."
+        tests:
+          - accepted_values:
+              values: [0, 1]
+              quote: false
+      - name: wheelchair_accessible
+        description: "0=no info, 1=some vehicles, 2=no vehicles."
+        tests:
+          - accepted_values:
+              values: [0, 1, 2]
+              quote: false
+      - name: bikes_allowed
+        description: "0=no info, 1=allowed, 2=not allowed."
+        tests:
+          - accepted_values:
+              values: [0, 1, 2]
+              quote: false

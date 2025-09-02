@@ -1,0 +1,17 @@
+version: 2
+sources:
+  - name: gtfs_raw
+    database: ohio-transit-460000
+    schema: ohio_gtfs
+    tables:
+      - name: agency
+      - name: stops
+      - name: routes
+      - name: trips
+      - name: stop_times
+      - name: calendar
+      - name: calendar_dates
+      - name: fare_attributes
+      - name: fare_rules
+      - name: shapes
+      - name: transfers

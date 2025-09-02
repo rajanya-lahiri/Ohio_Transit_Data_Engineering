@@ -1,0 +1,74 @@
+version: 2
+
+models:
+  # 1) Expanded calendar: (service_id, service_date) that actually runs
+  - name: service_calendar
+    description: "Expanded calendar from stg_calendar + stg_calendar_dates; actual active dates per service_id."
+    columns:
+      - name: service_id
+        tests: [not_null]
+      - name: service_date
+        tests: [not_null]
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [service_id, service_date]
+
+  # 2) Trip-by-date detail (what runs when)
+  - name: trips_with_service
+    description: "Trips joined to service_calendar to enumerate each trip on each active service_date."
+    columns:
+      - name: trip_id
+        tests: [not_null]
+      - name: service_date
+        tests: [not_null]
+      - name: route_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_routes')
+              field: route_id
+      - name: service_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_calendar')
+              field: service_id
+      - name: direction_id
+      - name: shape_id
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns: [trip_id, service_date]
+
+  # 3) Busiest stops (arrivals count)
+  - name: mart_busiest_stops
+    description: "Arrivals per stop from stop_times, joined to stop names."
+    columns:
+      - name: stop_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_stops')
+              field: stop_id
+      - name: stop_name
+      - name: arrivals
+        tests:
+          - not_null
+    tests:
+      - unique:
+          column_name: stop_id
+
+  # 4) Route summary (trip counts, headsign variety, directions)
+  - name: mart_route_summary
+    description: "Route-level metrics: number of trips, unique headsigns, and directions present."
+    columns:
+      - name: route_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_routes')
+              field: route_id
+      - name: trips
+        tests:
+          - not_null
+      - name: unique_headsings
+      - name: directions_present

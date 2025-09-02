@@ -1,0 +1,31 @@
+[0m11:24:04.140603 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x107c6e630>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x11067a450>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x11067a180>]}
+
+
+============================== 11:24:04.143108 | 75c805e3-70ff-4d73-bf1f-6682ded59cda ==============================
+[0m11:24:04.143108 [info ] [MainThread]: Running with dbt=1.10.7
+[0m11:24:04.143372 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/Users/rajanya/.dbt', 'version_check': 'True', 'debug': 'False', 'log_path': 'logs', 'fail_fast': 'False', 'warn_error': 'None', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'empty': 'None', 'log_format': 'default', 'introspect': 'True', 'static_parser': 'True', 'invocation_command': 'dbt init ohio_transit', 'target_path': 'None', 'warn_error_options': 'WarnErrorOptionsV2(error=[], warn=[], silence=[])', 'send_anonymous_usage_stats': 'True'}
+[0m11:24:04.151770 [info ] [MainThread]: Creating dbt configuration folder at /Users/rajanya/.dbt
+[0m11:24:04.152858 [debug] [MainThread]: Starter project path: /opt/anaconda3/lib/python3.12/site-packages/dbt/include/starter_project
+[0m11:24:04.156636 [info ] [MainThread]: 
+Your new dbt project "ohio_transit" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m11:24:04.156920 [info ] [MainThread]: Setting up your profile.
+[0m11:29:14.505915 [info ] [MainThread]: Profile ohio_transit written to /Users/rajanya/.dbt/profiles.yml using target's profile_template.yml and your supplied values. Run 'dbt debug' to validate the connection.
+[0m11:29:14.509936 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": true, "command_wall_clock_time": 310.40436, "process_in_blocks": "0", "process_kernel_time": 0.899516, "process_mem_max_rss": "400752640", "process_out_blocks": "0", "process_user_time": 3.913034}
+[0m11:29:14.521816 [debug] [MainThread]: Command `dbt init` succeeded at 11:29:14.520621 after 310.42 seconds
+[0m11:29:14.526949 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x16df20830>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x16e3ba090>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x1106e0bf0>]}
+[0m11:29:14.527941 [debug] [MainThread]: Flushing usage events
+[0m11:29:14.867011 [debug] [MainThread]: An error was encountered while trying to flush usage events

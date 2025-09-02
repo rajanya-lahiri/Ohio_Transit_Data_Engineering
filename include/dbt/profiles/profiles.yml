@@ -1,0 +1,11 @@
+ohio_transit:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      project: ohio-transit-460000
+      dataset: ohio_transit_dbt
+      location: US
+      keyfile: /usr/local/airflow/include/ohio-transit-creds.json
+      threads: 4
