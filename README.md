@@ -1,12 +1,12 @@
-Ohio Transit Data Engineering 🚍
+**Ohio Transit Data Engineering 🚍**
 
-📌 Overview
+**📌 Overview**
 
 End-to-end data engineering project on Ohio’s public transit (COTA GTFS). Built a pipeline that transforms raw CSVs into analytics-ready datasets and dashboards for insights.
 
 ⸻
 
-⚙️ Tech Stack
+**⚙️ Tech Stack**
 	•	Airflow – Orchestration
 	•	BigQuery – Cloud data warehouse
 	•	dbt – Transformations & tests
@@ -15,7 +15,7 @@ End-to-end data engineering project on Ohio’s public transit (COTA GTFS). Buil
 
 ⸻
 
-🚀 What It Does
+**🚀 What It Does**
 	•	Automates ingestion of GTFS transit files
 	•	Cleans & models data into staging + marts layers
 	•	Delivers insights on:
@@ -25,14 +25,14 @@ End-to-end data engineering project on Ohio’s public transit (COTA GTFS). Buil
 
 ⸻
 
-📊 Outcomes
+**📊 Outcomes**
 	•	Turned static CSVs into live dashboards
 	•	Reduced manual reporting with automated ETL
 	•	Created a scalable pipeline replicable for other cities
 
 ⸻
 
-🛠️ How to Run
+**🛠️ How to Run**
 	1.	Clone repo & configure GCP credentials
 	2.	Run Airflow with astro dev start
 	3.	Trigger DAGs → Data lands in BigQuery
@@ -41,7 +41,25 @@ End-to-end data engineering project on Ohio’s public transit (COTA GTFS). Buil
 
 ⸻
 
-📖 Learnings
+**📂 Project Architecture**
+
+Raw GTFS Data (COTA CSVs)  
+        │  
+        ▼  
+ Google Cloud Storage (GCS)  
+        │  
+        ▼  
+Apache Airflow DAGs ──────► BigQuery (raw → staging → marts)  
+                                │  
+                                ▼  
+                          dbt Models & Tests  
+                                │  
+                                ▼  
+                         Looker Studio Dashboard  
+						 
+⸻
+
+**📖 Learnings**
 	•	Hands-on with cloud data engineering
 	•	Designing raw → staging → marts pipelines
 	•	Turning messy GTFS data into usable insights
